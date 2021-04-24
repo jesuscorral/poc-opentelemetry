@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  poc.opentelemetry.api:
+    image: ${DOCKER_REGISTRY-}opentelemetryapi
+    build:
+      context: .
+      dockerfile: POC.OpenTelemetry.API/Dockerfile

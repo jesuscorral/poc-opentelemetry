@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  poc.opentelemetry.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - PATH_BASE=/poc.opentelemetry.api
+    ports:
+      - "5000:80"
+      - "5001:443"

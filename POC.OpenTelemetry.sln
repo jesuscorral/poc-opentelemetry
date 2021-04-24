@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POC.OpenTelemetry.API", "POC.OpenTelemetry.API\POC.OpenTelemetry.API.csproj", "{7C3C1AF1-23D4-4CC9-95B5-D19AFC90F447}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E6774BAD-5767-41A5-AB6C-397FEBF18F00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C3C1AF1-23D4-4CC9-95B5-D19AFC90F447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C3C1AF1-23D4-4CC9-95B5-D19AFC90F447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C3C1AF1-23D4-4CC9-95B5-D19AFC90F447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C3C1AF1-23D4-4CC9-95B5-D19AFC90F447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6774BAD-5767-41A5-AB6C-397FEBF18F00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6774BAD-5767-41A5-AB6C-397FEBF18F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6774BAD-5767-41A5-AB6C-397FEBF18F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6774BAD-5767-41A5-AB6C-397FEBF18F00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4CEA8D26-0A97-4925-B5AA-37BAD2768889}
+	EndGlobalSection
+EndGlobal
