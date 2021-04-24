@@ -1,0 +1,30 @@
+name: ci-poc-open-telemetry
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      build_config: Release
+      
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore POC.OpenTelemetry.sln
+    - name: Build
+      run: dotnet build --no-restore POC.OpenTelemetry.sln
+      
+    - name: Build
+      run: dotnet build POC.OpenTelemetry.sln --configuration $build_config --no-restore
+   
