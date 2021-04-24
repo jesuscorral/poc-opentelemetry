@@ -23,8 +23,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore ./POC.OpenTelemetry.sln
+      run: dotnet build --no-restore POC.OpenTelemetry.sln
       
     - name: Build
-      run: dotnet build ./POC.OpenTelemetry.sln --configuration $build_config --no-restore
+      run: dotnet build POC.OpenTelemetry.sln --configuration $build_config --no-restore
    
