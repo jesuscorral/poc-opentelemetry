@@ -1,37 +1,38 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System;
 using System.Text;
 
 namespace EventBusRabbitMQ
 {
-    public class EventBusRabbitMQService: IEventBusRabbitMQService
+    public class EventBusRabbitMQService : IEventBusRabbitMQService
     {
         private readonly RabbitMqConfiguration _rabbitMqConfiguration;
         private IConnection _connection;
+        private IModel _channel;
 
         public EventBusRabbitMQService(RabbitMqConfiguration rabbitMqConfiguration)
         {
             _rabbitMqConfiguration = rabbitMqConfiguration ?? throw new ArgumentNullException(nameof(rabbitMqConfiguration));
 
-            CreateConnection();
+            Initialize();
         }
 
         public void Publish(IntegrationEvent @event)
         {
             if (ConnectionExists())
             {
-                using (var channel = _connection.CreateModel())
-                {
-                    channel.QueueDeclare(queue: _rabbitMqConfiguration.QueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                var json = JsonConvert.SerializeObject(@event);
+                var body = Encoding.UTF8.GetBytes(json);
 
-                    var json = JsonConvert.SerializeObject(@event);
-                    var body = Encoding.UTF8.GetBytes(json);
-
-                    channel.BasicPublish(exchange: "", routingKey: _rabbitMqConfiguration.QueueName, basicProperties: null, body: body);
-                }
+                _channel.BasicPublish(exchange: "", routingKey: _rabbitMqConfiguration.QueueName, basicProperties: null, body: body);
             }
+        }
 
+        public void CloseConnection()
+        {
+            _connection?.Close();
         }
 
         private void CreateConnection()
@@ -61,9 +62,25 @@ namespace EventBusRabbitMQ
                 return true;
             }
 
-            CreateConnection();
+            Initialize();
 
             return _connection != null;
+        }
+
+        private void Initialize()
+        {
+            CreateConnection();
+            CreateQueue();
+        }
+
+        private void CreateQueue()
+        {
+            _channel = _connection.CreateModel();
+            _channel.QueueDeclare(queue: _rabbitMqConfiguration.QueueName,
+                            durable: true,
+                            exclusive: false,
+                            autoDelete: false,
+                            arguments: null);
         }
     }
 }

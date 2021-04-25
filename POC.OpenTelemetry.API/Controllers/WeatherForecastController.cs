@@ -1,6 +1,7 @@
 ﻿using EventBusRabbitMQ;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using POC.OpenTelemetry.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace POC.OpenTelemetry.API.Controllers
         {
             var rng = new Random();
 
-            var t = new IntegrationEvent();
+            var t = new AddUser { Username = "JesusCorral" };
 
             _eventBus.Publish(t);
 

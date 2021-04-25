@@ -42,7 +42,7 @@ namespace POC.OpenTelemetry.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime hostApplicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -60,6 +60,12 @@ namespace POC.OpenTelemetry.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            hostApplicationLifetime.ApplicationStopping.Register(() =>
+            {
+                var rabbitMqClient = app.ApplicationServices.GetRequiredService<IEventBusRabbitMQService>();
+                rabbitMqClient.CloseConnection();
             });
         }
     }

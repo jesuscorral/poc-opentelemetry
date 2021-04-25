@@ -3,12 +3,6 @@ version: '3.4'
 services:
   rabbitmq:
     image: 'rabbitmq:3.6-management-alpine'
-    container_name: 'poc-rabbitmq'
-    ports:
-      # The standard AMQP protocol port
-      - '5672:5672'
-      # HTTP management UI
-      - '15672:15672'
 
   poc.opentelemetry.api:
     image: ${DOCKER_REGISTRY-}opentelemetryapi

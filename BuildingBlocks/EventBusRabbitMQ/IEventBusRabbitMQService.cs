@@ -3,5 +3,7 @@
     public interface IEventBusRabbitMQService
     {
         void Publish(IntegrationEvent @event);
+
+        void CloseConnection();
     }
 }
