@@ -19,3 +19,10 @@ services:
       dockerfile: POC.OpenTelemetry.WorkerService/Dockerfile
     depends_on:
       - rabbitmq
+
+  poc.opentelemetry.grpc:
+    image: ${DOCKER_REGISTRY-}pocopentelemetrygrpc
+    build:
+      context: .
+      dockerfile: POC.OpenTelemetry.Grpc/Dockerfile
+

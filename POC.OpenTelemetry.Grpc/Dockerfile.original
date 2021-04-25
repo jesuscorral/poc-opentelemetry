@@ -19,10 +19,10 @@ COPY "docker-compose.dcproj" "docker-compose.dcproj"
 RUN dotnet restore "POC.OpenTelemetry.sln"
 
 COPY . .
-WORKDIR "/POC.OpenTelemetry.WorkerService"
+WORKDIR "/src/POC.OpenTelemetry.Grpc"
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "POC.OpenTelemetry.WorkerService.dll"]
+ENTRYPOINT ["dotnet", "POC.OpenTelemetry.Grpc.dll"]

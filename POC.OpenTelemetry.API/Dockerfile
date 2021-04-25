@@ -10,6 +10,7 @@ WORKDIR /src
 
 COPY  "POC.OpenTelemetry.sln" "POC.OpenTelemetry.sln"
 
+COPY "POC.OpenTelemetry.Grpc/POC.OpenTelemetry.Grpc.csproj", "POC.OpenTelemetry.Grpc/POC.OpenTelemetry.Grpc.csproj"
 COPY "POC.OpenTelemetry.API/POC.OpenTelemetry.API.csproj", "POC.OpenTelemetry.API/POC.OpenTelemetry.API.csproj"
 COPY "POC.OpenTelemetry.WorkerService/POC.OpenTelemetry.WorkerService.csproj" "POC.OpenTelemetry.WorkerService/POC.OpenTelemetry.WorkerService.csproj"
 
@@ -20,7 +21,6 @@ RUN dotnet restore "POC.OpenTelemetry.sln"
 COPY . .
 WORKDIR "/src/POC.OpenTelemetry.API"
 RUN dotnet publish --no-restore -c Release -o /app
-
 
 FROM base AS final
 WORKDIR /app
