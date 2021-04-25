@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POC.OpenTelemetry.API", "POC.OpenTelemetry.API\POC.OpenTelemetry.API.csproj", "{7C3C1AF1-23D4-4CC9-95B5-D19AFC90F447}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POC.OpenTelemetry.API", "POC.OpenTelemetry.API\POC.OpenTelemetry.API.csproj", "{7C3C1AF1-23D4-4CC9-95B5-D19AFC90F447}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E6774BAD-5767-41A5-AB6C-397FEBF18F00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POC.OpenTelemetry.WorkerService", "POC.OpenTelemetry.WorkerService\POC.OpenTelemetry.WorkerService.csproj", "{AB723F07-CD5D-4B1C-83D9-9B3EDDEBC968}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{87C7CF95-BB36-4DE1-B551-64F48527ADAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusRabbitMQ", "BuildingBlocks\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{FA532706-E70E-4706-BBF3-A91F2F0950CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +27,20 @@ Global
 		{E6774BAD-5767-41A5-AB6C-397FEBF18F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6774BAD-5767-41A5-AB6C-397FEBF18F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6774BAD-5767-41A5-AB6C-397FEBF18F00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB723F07-CD5D-4B1C-83D9-9B3EDDEBC968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB723F07-CD5D-4B1C-83D9-9B3EDDEBC968}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB723F07-CD5D-4B1C-83D9-9B3EDDEBC968}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB723F07-CD5D-4B1C-83D9-9B3EDDEBC968}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA532706-E70E-4706-BBF3-A91F2F0950CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA532706-E70E-4706-BBF3-A91F2F0950CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA532706-E70E-4706-BBF3-A91F2F0950CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA532706-E70E-4706-BBF3-A91F2F0950CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FA532706-E70E-4706-BBF3-A91F2F0950CA} = {87C7CF95-BB36-4DE1-B551-64F48527ADAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4CEA8D26-0A97-4925-B5AA-37BAD2768889}

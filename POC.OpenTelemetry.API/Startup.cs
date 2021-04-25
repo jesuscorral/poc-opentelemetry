@@ -1,3 +1,4 @@
+using EventBusRabbitMQ;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,19 @@ namespace POC.OpenTelemetry.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "POC.OpenTelemetry.API", Version = "v1" });
+            });
+
+            AddRabbitMQ(services);
+
+        }
+
+        private void AddRabbitMQ(IServiceCollection services)
+        {
+            var rabbitMqConfiguration = Configuration.GetSection(nameof(RabbitMqConfiguration)).Get<RabbitMqConfiguration>();
+
+            services.AddSingleton<IEventBusRabbitMQService, EventBusRabbitMQService>(sp =>
+            {
+                return new EventBusRabbitMQService(rabbitMqConfiguration);
             });
         }
 
