@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using POC.OpenTelemetry.API.Helpers;
 
 namespace POC.OpenTelemetry.API
 {
@@ -22,6 +23,11 @@ namespace POC.OpenTelemetry.API
         {
 
             services.AddControllers();
+
+            
+            string connectionString = Configuration.GetConnectionString("poc-opentelemetry");
+
+            services.AddDatabaseContext(connectionString);
 
             services.AddSwaggerGen(c =>
             {

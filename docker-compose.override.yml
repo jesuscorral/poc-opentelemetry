@@ -20,6 +20,8 @@ services:
     ports:
       - "5000:80"
       - "5001:443"
+    depends_on:
+      - rabbitmq
 
   poc.opentelemetry.workerservice:
     environment:
@@ -31,3 +33,5 @@ services:
     ports:
       - "6000:80"
       - "6001:443"
+    depends_on:
+      - rabbitmq

@@ -1,19 +1,31 @@
-version: '3.7'
+version: '3.8'
 
 services:
   rabbitmq:
     image: 'rabbitmq:3.6-management-alpine'
+    container_name: rabbitmq
 
   zipkin:
     image: openzipkin/zipkin
+    container_name: zipkin
     ports: 
       - 9411:9411
   
   jaeger:
     image: jaegertracing/all-in-one
+    container_name: jaeger
     ports:
       - "6831:6831/udp"
       - 16686:16686
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5434:1433"
+        
 
   poc.opentelemetry.api:
     image: ${DOCKER_REGISTRY-}opentelemetryapi
