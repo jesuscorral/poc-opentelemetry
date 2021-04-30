@@ -1,4 +1,3 @@
-using EventBusRabbitMQ;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using POC.OpenTelemetry.WorkerService.Models;

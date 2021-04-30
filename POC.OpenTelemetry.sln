@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusRabbitMQ", "BuildingBlocks\EventBusRabbitMQ\EventBusRabbitMQ.csproj", "{FA532706-E70E-4706-BBF3-A91F2F0950CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POC.OpenTelemetry.Grpc", "POC.OpenTelemetry.Grpc\POC.OpenTelemetry.Grpc.csproj", "{5C7EE0D3-48A7-4604-8C1C-F30F23EB95FE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,10 +35,6 @@ Global
 		{FA532706-E70E-4706-BBF3-A91F2F0950CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA532706-E70E-4706-BBF3-A91F2F0950CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA532706-E70E-4706-BBF3-A91F2F0950CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C7EE0D3-48A7-4604-8C1C-F30F23EB95FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C7EE0D3-48A7-4604-8C1C-F30F23EB95FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C7EE0D3-48A7-4604-8C1C-F30F23EB95FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C7EE0D3-48A7-4604-8C1C-F30F23EB95FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

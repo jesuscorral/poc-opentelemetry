@@ -22,6 +22,7 @@ namespace POC.OpenTelemetry.API
         {
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "POC.OpenTelemetry.API", Version = "v1" });

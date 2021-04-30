@@ -1,8 +1,19 @@
-version: '3.4'
+version: '3.7'
 
 services:
   rabbitmq:
     image: 'rabbitmq:3.6-management-alpine'
+
+  zipkin:
+    image: openzipkin/zipkin
+    ports: 
+      - 9411:9411
+  
+  jaeger:
+    image: jaegertracing/all-in-one
+    ports:
+      - "6831:6831/udp"
+      - 16686:16686
 
   poc.opentelemetry.api:
     image: ${DOCKER_REGISTRY-}opentelemetryapi
@@ -19,10 +30,4 @@ services:
       dockerfile: POC.OpenTelemetry.WorkerService/Dockerfile
     depends_on:
       - rabbitmq
-
-  poc.opentelemetry.grpc:
-    image: ${DOCKER_REGISTRY-}pocopentelemetrygrpc
-    build:
-      context: .
-      dockerfile: POC.OpenTelemetry.Grpc/Dockerfile
 
