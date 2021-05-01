@@ -18,14 +18,16 @@ services:
       - "6831:6831/udp"
       - 16686:16686
 
-  sqldata:
-    image: mcr.microsoft.com/mssql/server:2017-latest
+  sql-server:
+    image: microsoft/mssql-server-linux:latest    
+    container_name: sqlServer
     environment:
       - SA_PASSWORD=Pass@word
       - ACCEPT_EULA=Y
     ports:
       - "5434:1433"
-        
+    volumes:
+      - mssql-server-linux-data:/var/opt/mssql/data
 
   poc.opentelemetry.api:
     image: ${DOCKER_REGISTRY-}opentelemetryapi
@@ -34,6 +36,7 @@ services:
       dockerfile: POC.OpenTelemetry.API/Dockerfile
     depends_on:
       - rabbitmq
+      - sql-server
 
   poc.opentelemetry.workerservice:
     image: ${DOCKER_REGISTRY-}opentelemetryworkerservice
@@ -43,3 +46,5 @@ services:
     depends_on:
       - rabbitmq
 
+volumes:
+  mssql-server-linux-data:

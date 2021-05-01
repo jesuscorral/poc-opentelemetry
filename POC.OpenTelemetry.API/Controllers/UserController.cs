@@ -13,45 +13,24 @@ namespace POC.OpenTelemetry.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class UserController : ControllerBase
     {
         private static IEventBusRabbitMQService _eventBus;
         private readonly Datacontext _context;
 
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger,
+        public UserController(ILogger<UserController> logger,
             IEventBusRabbitMQService eventBus,
             Datacontext context)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<User> GetUsers()
         {
-            var rng = new Random();
-
-            var t = new AddUser { Username = "JesusCorral" };
-
-            _eventBus.Publish(t);
-
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return _context.Users.ToList();
         }
-
 
         [HttpPost]
         public async Task<ActionResult> AddUser()
@@ -67,8 +46,16 @@ namespace POC.OpenTelemetry.API.Controllers
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            Publish(user);
 
+            return Ok();
+        }
+
+        private void Publish(User user)
+        {
+            var userAdded = new UserAdded { Username = user.Username };
+
+            _eventBus.Publish(userAdded);
         }
     }
 }

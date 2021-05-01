@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using POC.OpenTelemetry.API.Helpers;
 
 namespace POC.OpenTelemetry.API
@@ -21,32 +20,29 @@ namespace POC.OpenTelemetry.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
-
-            
             string connectionString = Configuration.GetConnectionString("poc-opentelemetry");
-
-            services.AddDatabaseContext(connectionString);
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "POC.OpenTelemetry.API", Version = "v1" });
-            });
-
-            AddRabbitMQ(services);
-
-        }
-
-        private void AddRabbitMQ(IServiceCollection services)
-        {
             var rabbitMqConfiguration = Configuration.GetSection(nameof(RabbitMqConfiguration)).Get<RabbitMqConfiguration>();
 
-            services.AddSingleton<IEventBusRabbitMQService, EventBusRabbitMQService>(sp =>
-            {
-                return new EventBusRabbitMQService(rabbitMqConfiguration);
-            });
+            services
+                .AddControllers()
+                .Services
+                .AddDatabaseContext(connectionString)
+                .AddCustomRabbitMQ(rabbitMqConfiguration)
+                .AddCustomSwagger()
+                .AddSingleton<QueueProducer>()
+                .AddCustomOpenTelemetry();
+
+
+
+
+           
+
+
+                
+
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime hostApplicationLifetime)

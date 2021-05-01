@@ -2,7 +2,7 @@
 
 namespace POC.OpenTelemetry.API.Models
 {
-    public record AddUser: IntegrationEvent
+    public record UserAdded: IntegrationEvent
     {
         public string Username { get; set; }
     }
