@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EventBusRabbitMQ
 {
@@ -19,7 +19,7 @@ namespace EventBusRabbitMQ
             Initialize();
         }
 
-        public void Publish(IntegrationEvent @event)
+        public async Task Publish(IntegrationEvent @event)
         {
             if (ConnectionExists())
             {

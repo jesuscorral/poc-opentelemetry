@@ -5,7 +5,7 @@ services:
     image: 'rabbitmq:3.6-management-alpine'
     container_name: rabbitmq
 
-  zipkin:
+  zipkin1:
     image: openzipkin/zipkin
     container_name: zipkin
     ports: 
@@ -37,6 +37,8 @@ services:
     depends_on:
       - rabbitmq
       - sql-server
+      - zipkin1
+      - jaeger
 
   poc.opentelemetry.workerservice:
     image: ${DOCKER_REGISTRY-}opentelemetryworkerservice
@@ -45,6 +47,8 @@ services:
       dockerfile: POC.OpenTelemetry.WorkerService/Dockerfile
     depends_on:
       - rabbitmq
+      - zipkin1
+      - jaeger
 
 volumes:
   mssql-server-linux-data:

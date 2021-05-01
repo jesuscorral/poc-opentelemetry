@@ -1,8 +1,10 @@
-﻿namespace EventBusRabbitMQ
+﻿using System.Threading.Tasks;
+
+namespace EventBusRabbitMQ
 {
     public interface IEventBusRabbitMQService
     {
-        void Publish(IntegrationEvent @event);
+        Task Publish(IntegrationEvent @event);
 
         void CloseConnection();
     }

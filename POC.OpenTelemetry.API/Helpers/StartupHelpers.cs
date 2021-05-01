@@ -50,17 +50,16 @@ namespace POC.OpenTelemetry.API.Helpers
                     opt.RecordException = true;
                 })
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("POC.OpenTelemetry.API"))
-                    .AddSource(nameof(QueueProducer))
                     .AddHttpClientInstrumentation()
                     .AddSqlClientInstrumentation(options => options.SetDbStatementForText = true)
                     .AddConsoleExporter()
                     .AddZipkinExporter(options =>
                     {
-                        options.Endpoint = new Uri("http://localhost:9411/api/v2/spans");
+                        options.Endpoint = new Uri("http://zipkin1:9411/api/v2/spans");
                     })
                     .AddJaegerExporter(jaegerOptions =>
                     {
-                        jaegerOptions.AgentHost = "localhost";
+                        jaegerOptions.AgentHost = "jaeger";
                         jaegerOptions.AgentPort = 6813;
                     });
                 });

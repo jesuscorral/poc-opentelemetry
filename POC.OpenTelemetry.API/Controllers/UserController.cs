@@ -6,6 +6,7 @@ using POC.OpenTelemetry.API.Domain;
 using POC.OpenTelemetry.API.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,16 +47,16 @@ namespace POC.OpenTelemetry.API.Controllers
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            Publish(user);
+            await Publish(user);
 
-            return Ok();
+            return Ok(Activity.Current.TraceId);
         }
 
-        private void Publish(User user)
+        private async Task Publish(User user)
         {
-            var userAdded = new UserAdded { Username = user.Username };
+            var userAdded = new UserAddedEvent { Username = user.Username };
 
-            _eventBus.Publish(userAdded);
+            await _eventBus.Publish(userAdded);
         }
     }
 }
