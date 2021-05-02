@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>dotnet-POC.OpenTelemetry.Worker-CF33CBA8-7BA6-498E-853B-581041A673C1</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.32.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.32.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.12" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\POC.OpenTelemetry.Grpc\Protos\greet.proto" GrpcServices="Client">
+      <Link>Protos\greet.proto</Link>
+    </Protobuf>
+  </ItemGroup>
+</Project>

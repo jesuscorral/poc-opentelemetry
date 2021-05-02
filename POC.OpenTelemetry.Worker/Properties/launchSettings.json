@@ -1,11 +1,10 @@
 {
   "profiles": {
-    "POC.OpenTelemetry.WorkerService": {
+    "POC.OpenTelemetry.Worker": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": "true"
+      }
     },
     "Docker": {
       "commandName": "Docker"

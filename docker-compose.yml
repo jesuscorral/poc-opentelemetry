@@ -29,6 +29,14 @@ services:
     volumes:
       - mssql-server-linux-data:/var/opt/mssql/data
 
+  poc.opentelemetry.grpc:
+    image: ${DOCKER_REGISTRY-}pocopentelemetrygrpc
+    build:
+      context: .
+      dockerfile: POC.OpenTelemetry.Grpc/Dockerfile
+    ports:
+      - "7000:80"
+
   poc.opentelemetry.api:
     image: ${DOCKER_REGISTRY-}opentelemetryapi
     build:
@@ -40,15 +48,21 @@ services:
       - zipkin1
       - jaeger
 
-  poc.opentelemetry.workerservice:
-    image: ${DOCKER_REGISTRY-}opentelemetryworkerservice
+  poc.opentelemetry.worker:
+    image: ${DOCKER_REGISTRY-}opentelemetryworker
     build:
       context: .
-      dockerfile: POC.OpenTelemetry.WorkerService/Dockerfile
+      dockerfile: POC.OpenTelemetry.Worker/Dockerfile
+    environment:
+      - GrpcServiceHost=http://poc.opentelemetry.grpc
     depends_on:
       - rabbitmq
       - zipkin1
       - jaeger
+      - poc.opentelemetry.grpc
+    ports:
+      - "8000:80"
+  
 
 volumes:
   mssql-server-linux-data:
