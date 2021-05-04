@@ -4,8 +4,13 @@ services:
   rabbitmq:
     image: 'rabbitmq:3.6-management-alpine'
     container_name: rabbitmq
-
-  zipkin1:
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - 5672:5672
+      - 15672:15672
+  zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     ports: 
@@ -34,18 +39,34 @@ services:
     build:
       context: .
       dockerfile: POC.OpenTelemetry.Grpc/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ZIPKIN_HOSTNAME=zipkin
+      - JAEGER_HOSTNAME=jaeger
     ports:
       - "7000:80"
 
   poc.opentelemetry.api:
     image: ${DOCKER_REGISTRY-}opentelemetryapi
+    container_name: OpenTelemetry-API
     build:
       context: .
       dockerfile: POC.OpenTelemetry.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - ZIPKIN_HOSTNAME=zipkin
+      - JAEGER_HOSTNAME=jaeger
+    ports:
+      - "5000:80"
+      - "5001:443"
+    restart: on-failure
     depends_on:
       - rabbitmq
       - sql-server
-      - zipkin1
+      - zipkin
       - jaeger
 
   poc.opentelemetry.worker:
@@ -54,14 +75,22 @@ services:
       context: .
       dockerfile: POC.OpenTelemetry.Worker/Dockerfile
     environment:
+      - ASPNETCORE_ENVIRONMENT=Development
       - GrpcServiceHost=http://poc.opentelemetry.grpc
+      - RABBITMQ_HOSTNAME=rabbitmq
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - ZIPKIN_HOSTNAME=zipkin
+      - JAEGER_HOSTNAME=jaeger
     depends_on:
       - rabbitmq
-      - zipkin1
+      - zipkin
       - jaeger
       - poc.opentelemetry.grpc
+    restart: on-failure
     ports:
-      - "8000:80"
+      - "6000:80"
+      - "6001:443"
   
 
 volumes:

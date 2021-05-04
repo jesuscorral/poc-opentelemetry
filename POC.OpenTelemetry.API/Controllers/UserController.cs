@@ -1,9 +1,7 @@
-﻿using EventBusRabbitMQ;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using POC.OpenTelemetry.API.Data;
 using POC.OpenTelemetry.API.Domain;
-using POC.OpenTelemetry.API.Models;
+using POC.OpenTelemetry.Worker.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,15 +14,13 @@ namespace POC.OpenTelemetry.API.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private static IEventBusRabbitMQService _eventBus;
         private readonly Datacontext _context;
+        private readonly MessageSender _messageSender;
 
-        public UserController(ILogger<UserController> logger,
-            IEventBusRabbitMQService eventBus,
-            Datacontext context)
+        public UserController(Datacontext context, MessageSender messageSender)
         {
-            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
         }
 
         [HttpGet]
@@ -49,14 +45,14 @@ namespace POC.OpenTelemetry.API.Controllers
 
             await Publish(user);
 
-            return Ok(Activity.Current.TraceId);
+            return Ok(Activity.Current.TraceId.ToString());
         }
 
         private async Task Publish(User user)
         {
             var userAdded = new UserAddedEvent { Username = user.Username };
 
-            await _eventBus.Publish(userAdded);
+            _messageSender.SendMessage(userAdded);
         }
     }
 }

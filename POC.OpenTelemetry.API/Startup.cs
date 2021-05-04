@@ -21,13 +21,12 @@ namespace POC.OpenTelemetry.API
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("poc-opentelemetry");
-            var rabbitMqConfiguration = Configuration.GetSection(nameof(RabbitMqConfiguration)).Get<RabbitMqConfiguration>();
 
             services
                 .AddControllers()
                 .Services
+                .AddSingleton<MessageSender>()
                 .AddDatabaseContext(connectionString)
-                .AddCustomRabbitMQ(rabbitMqConfiguration)
                 .AddCustomSwagger()
                 .AddCustomOpenTelemetry();
         }
@@ -51,12 +50,6 @@ namespace POC.OpenTelemetry.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            hostApplicationLifetime.ApplicationStopping.Register(() =>
-            {
-                var rabbitMqClient = app.ApplicationServices.GetRequiredService<IEventBusRabbitMQService>();
-                rabbitMqClient.CloseConnection();
             });
         }
     }

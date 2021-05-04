@@ -22,26 +22,14 @@ namespace POC.OpenTelemetry.API.Helpers
             return services;
         }
 
-        public static IServiceCollection AddCustomRabbitMQ(this IServiceCollection services, RabbitMqConfiguration rabbitMqConfiguration)
-        {
-
-            services.AddSingleton<IEventBusRabbitMQService, EventBusRabbitMQService>(sp =>
-            {
-                return new EventBusRabbitMQService(rabbitMqConfiguration);
-            });
-            return services;
-
-        }
-
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            return services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "POC.OpenTelemetry.API", Version = "v1" });
             });
-
-            return services;
         }
+       
         public static IServiceCollection AddCustomOpenTelemetry(this IServiceCollection services)
         {
            return services.AddOpenTelemetryTracing((builder) => {
@@ -50,17 +38,19 @@ namespace POC.OpenTelemetry.API.Helpers
                     opt.RecordException = true;
                 })
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("POC.OpenTelemetry.API"))
+                    .AddSource(nameof(MessageSender))
                     .AddHttpClientInstrumentation()
                     .AddSqlClientInstrumentation(options => options.SetDbStatementForText = true)
                     .AddConsoleExporter()
                     .AddZipkinExporter(options =>
                     {
-                        options.Endpoint = new Uri("http://zipkin1:9411/api/v2/spans");
+                        var zipkinHostName = Environment.GetEnvironmentVariable("ZIPKIN_HOSTNAME") ?? "localhost";
+                        options.Endpoint = new Uri($"http://{zipkinHostName}:9411/api/v2/spans");
                     })
                     .AddJaegerExporter(jaegerOptions =>
                     {
                         jaegerOptions.AgentHost = "jaeger";
-                        jaegerOptions.AgentPort = 6813;
+                        jaegerOptions.AgentPort = 6831;
                     });
                 });
         }

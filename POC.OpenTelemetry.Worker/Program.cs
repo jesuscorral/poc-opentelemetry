@@ -1,9 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using POC.OpenTelemetry.Worker.Helpers;
 
 namespace POC.OpenTelemetry.Worker
 {
@@ -16,9 +13,14 @@ namespace POC.OpenTelemetry.Worker
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    services
+                        .AddSingleton<MessageReceiver>()
+                        .AddHostedService<Worker>()
+                        .AddSingleton<GrpcClient>()
+                        .AddCustomOpenTelemetry();
                 });
     }
 }

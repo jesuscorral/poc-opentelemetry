@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using POC.OpenTelemetry.Grpc.Helpers;
 
 namespace POC.OpenTelemetry.Grpc
 {
@@ -9,7 +10,11 @@ namespace POC.OpenTelemetry.Grpc
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGrpc();
+            services
+                .AddHttpClient()
+                .AddGrpc()
+                .Services
+                .AddCustomOpenTelemetry();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -9,7 +9,6 @@ namespace POC.OpenTelemetry.API.Data
         {
         }
 
-
         public DbSet<User> Users { get; set; }
     }
 }
