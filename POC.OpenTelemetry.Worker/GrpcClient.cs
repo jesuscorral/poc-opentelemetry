@@ -30,10 +30,9 @@ namespace POC.OpenTelemetry.Worker
             var channel = GrpcChannel.ForAddress(host);
             var client = new Greeter.GreeterClient(channel);
 
-            // TODO: Cambiar para que devuelta algo
-            client.SayHelloAsync(new HelloRequest { Name = user.Username });
+            var grpcResponse = client.SayHelloAsync(new HelloRequest { Name = user.Username });
 
-            //activity.SetTag("Response", "Respuesta eseperada");
+            activity.SetTag("Response", $"Grpc response: { grpcResponse }");
         }
     }
 }

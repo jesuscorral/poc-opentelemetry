@@ -11,30 +11,36 @@ namespace POC.OpenTelemetry.Grpc
 {
     public class GreeterService : Greeter.GreeterBase
     {
-        private readonly ILogger<GreeterService> _logger;
         private readonly IHttpClientFactory _httpClient;
 
-        public GreeterService(ILogger<GreeterService> logger,
-            IHttpClientFactory httpClient)
+        public GreeterService(IHttpClientFactory httpClient)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         public override async Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
         {
-            Activity.Current.SetTag("UserRequest", JsonSerializer.Serialize(request));
-
-            var ret = Task.FromResult(new HelloReply
+            try
             {
-                Message = "Hello " + request.Name
-            });
+                Activity.Current.SetTag("UserRequest", JsonSerializer.Serialize(request));
 
-            var client = _httpClient.CreateClient();
-            var response = await client.PostAsync("https://poc-opentelemetry.requestcatcher.com/", 
-                new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"));
+                // Web hook request
+                var client = _httpClient.CreateClient();
+                var response = await client.PostAsync("https://poc-opentelemetry.requestcatcher.com/",
+                    new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"));
 
-            return await ret;
+                Activity.Current.SetTag("Webhook", "Webhook called");
+
+                return new HelloReply
+                {
+                    Message = "Hello " + request.Name
+                };
+            }
+            catch(Exception ex)
+            {
+                Activity.Current.SetTag("Error", ex.Message);
+            }
+            return null;
         }
     }
 }

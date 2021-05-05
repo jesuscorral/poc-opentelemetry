@@ -23,35 +23,44 @@ namespace POC.OpenTelemetry.API.Controllers
             _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddUser()
+        {
+            // Create user and insert into DB
+            var user = BuildNewUser();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            //// Checks exceptions in traces
+            //throw new ArgumentNullException("Null exception");
+
+            // Publish message to Rabbitmq queue
+            var userAdded = new UserAddedEvent { Username = user.Username };
+            Publish(userAdded);
+
+            // Return trace Id
+            return Ok(Activity.Current.TraceId.ToString());
+        }
+
         [HttpGet]
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.ToList();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AddUser()
+        private User BuildNewUser()
         {
-            var user = new User
+            return new User
             {
                 Id = Guid.NewGuid(),
                 Name = "Jesus",
                 Surname = "corral",
                 Username = "jCorral"
             };
-
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-
-            await Publish(user);
-
-            return Ok(Activity.Current.TraceId.ToString());
         }
 
-        private async Task Publish(User user)
+        private void Publish(UserAddedEvent userAdded)
         {
-            var userAdded = new UserAddedEvent { Username = user.Username };
-
             _messageSender.SendMessage(userAdded);
         }
     }

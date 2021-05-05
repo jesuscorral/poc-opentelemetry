@@ -1,5 +1,4 @@
-﻿using EventBusRabbitMQ;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System;

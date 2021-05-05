@@ -17,7 +17,6 @@ namespace POC.OpenTelemetry.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("poc-opentelemetry");
@@ -28,10 +27,9 @@ namespace POC.OpenTelemetry.API
                 .AddSingleton<MessageSender>()
                 .AddDatabaseContext(connectionString)
                 .AddCustomSwagger()
-                .AddCustomOpenTelemetry();
+                .AddCustomOpenTelemetry(); // Open Telemetry configuration
         }
         
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime hostApplicationLifetime)
         {
             if (env.IsDevelopment())

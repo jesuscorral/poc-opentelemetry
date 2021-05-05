@@ -10,6 +10,7 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+  
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -92,6 +93,5 @@ services:
       - "6000:80"
       - "6001:443"
   
-
 volumes:
   mssql-server-linux-data:

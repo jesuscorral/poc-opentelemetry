@@ -52,12 +52,12 @@ namespace EventBusRabbitMQ
             channel.BasicConsume(queue: QueueName, autoAck: true, consumer: consumer);
         }
 
+        // These tags are added demonstrating the semantic conventions of the OpenTelemetry messaging specification
+        // See:
+        //   * https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/messaging.md#messaging-attributes
+        //   * https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/messaging.md#rabbitmq
         public static void AddMessagingTags(Activity activity)
         {
-            // These tags are added demonstrating the semantic conventions of the OpenTelemetry messaging specification
-            // See:
-            //   * https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/messaging.md#messaging-attributes
-            //   * https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/messaging.md#rabbitmq
             activity?.SetTag("messaging.system", "rabbitmq");
             activity?.SetTag("messaging.destination_kind", "queue");
             activity?.SetTag("messaging.destination", DefaultExchangeName);
