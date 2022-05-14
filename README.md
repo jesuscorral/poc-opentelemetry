@@ -1,1 +1,1 @@
-# poc-opentelemetry
+# OpenTelemetry POC
